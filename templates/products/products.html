@@ -15,8 +15,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ products.name }}</h5>
                     <h6 class="card-title">{{ products.description }}</h6>
-                    <h7 class="card-title">{{ products.price }}</h7>
-                    <a href="#" class="card-link">More</a>
+                    <h6 class="card-title">{{ products.price }}</h6>
+                    <a href="/products/{{ products.id }}" class="card-link">More</a>
                 </div>
             </div>
         {% endfor %}
