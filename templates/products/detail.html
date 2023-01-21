@@ -20,8 +20,13 @@
             padding: 10px;
             margin-bottom: 20px;
         }
+        .product > img {
+            width: 100%;
+            height: auto;
+        }
     </style>
     <div class="products">
+        <img class="product_image" src="/media/{{ product.image }}/" alt="">
         <h1>{{ product.title }}</h1>
         <h4>{{ product.description }}</h4>
         <h4>Rate: {{ product.rate }}</h4>

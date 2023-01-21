@@ -3,6 +3,11 @@ from django.db import models
 # Create your models here.
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    icon = models.ImageField(max_length=255, null=True, blank=True)
+
+
 class Product(models.Model):
     image = models.ImageField(null=True, blank=True)
     name = models.CharField(max_length=255)
@@ -11,6 +16,10 @@ class Product(models.Model):
     quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Review(models.Model):
@@ -18,3 +27,6 @@ class Review(models.Model):
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+
+
+

@@ -1,7 +1,6 @@
 from django.shortcuts import render
-from posts.models import Product, Review
+from posts.models import Product, Review, Category
 
-#from datetime import datetime
 
 # Create your views here.
 
@@ -33,15 +32,10 @@ def product_detail_view(request, id):
         }
         return render(request, 'products/detail.html', context=context)
 
-#def hello(request):
-#    if request.method == 'GET':
-#        return HttpResponse('hello! its my project')
 
-#def now_date(request):
-#    now = datetime.now()
-#    if request.method == 'GET':
-#        return HttpResponse(f'The current date is {now}')
-
-#def goodby(request):
-#    if request.method == 'GET':
-#        return HttpResponse('Goodby user')
+def categories_view(request):
+    if request.method == 'GET':
+        context = {
+            'categories': Category.objects.all()
+        }
+        return render(request, 'categories/index.html', context=context)
