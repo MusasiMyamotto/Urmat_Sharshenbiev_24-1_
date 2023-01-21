@@ -12,10 +12,13 @@ def main(request):
 
 def products_view(request):
     if request.method == 'GET':
-        products = Product.objects.all()
-
+        category_id = request.GET.get('categori_id')
+        if category_id:
+            products = Product.objects.filter(category=Category.objects.get(id=category_id))
+        else:
+            products = Product.objects.all()
         context = {
-           'products': products
+            'products': products
         }
 
         return render(request, 'products/products.html', context=context)
@@ -39,4 +42,4 @@ def category_view(request):
         context = {
             'categories': categories
         }
-        return render(request,'categories/index.html', context=context)
+        return render(request, 'categories/index.html', context=context)

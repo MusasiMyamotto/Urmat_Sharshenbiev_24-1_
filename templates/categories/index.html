@@ -2,7 +2,12 @@
 
 {% block content %}
     <style type="text/css">
+        .categori > img {
+            display: flex;
+            width: 100px;
+            height: 100px;
 
+        }
         .categories {
             display: flex;
             justify-content: space-between;
@@ -11,15 +16,16 @@
 
     </style>
     <div class="categories">
-        {% for category in categories %}
-            <div class="category">
+        {% for categori in categories %}
+            <div class="categori">
+                <img src="/media/{{ categori.icon }}" alt="">
                 <h3>
-                    <a href="/products/?category_id={{ category.id }}">
-                        {{ category.title }} {{ category.posts.count }}
+                    <a href="/products/?categori_id={{ categori.id }}">
+                        {{ categori.name }} {{ categori.products.count }}
                     </a>
                 </h3>
             </div>
-
+            <h3>{{ categori.title }}</h3>
         {% endfor %}
     </div>
 {% endblock %}
