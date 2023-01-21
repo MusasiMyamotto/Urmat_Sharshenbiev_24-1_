@@ -33,9 +33,10 @@ def product_detail_view(request, id):
         return render(request, 'products/detail.html', context=context)
 
 
-def categories_view(request):
+def category_view(request):
     if request.method == 'GET':
+        categories = Category.objects.all()
         context = {
-            'categories': Category.objects.all()
+            'categories': categories
         }
-        return render(request, 'categories/index.html', context=context)
+        return render(request,'categories/index.html', context=context)

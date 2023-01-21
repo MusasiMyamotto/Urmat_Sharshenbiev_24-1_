@@ -1,13 +1,25 @@
 {% extends 'layouts/index.html' %}
 
 {% block content %}
+    <style type="text/css">
+
+        .categories {
+            display: flex;
+            justify-content: space-between;
+            width: 20%;
+        }
+
+    </style>
     <div class="categories">
         {% for category in categories %}
-            <div class="categories">
-                <a href="/products/?categories_id={{ categories.id }}">
-                    {{ categories.title }} {{ categories.posts.count }}
-                </a>
+            <div class="category">
+                <h3>
+                    <a href="/products/?category_id={{ category.id }}">
+                        {{ category.title }} {{ category.posts.count }}
+                    </a>
+                </h3>
             </div>
+
         {% endfor %}
     </div>
 {% endblock %}
