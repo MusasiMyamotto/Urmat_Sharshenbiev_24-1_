@@ -23,10 +23,6 @@
         .product > img {
             width: 100%;
             height: auto;
-            margin-right: 10%;
-            margin-bottom: 20px;
-            margin-left: 10%;
-            margin-top: 20px;
         }
     </style>
     <div class="products">
@@ -38,12 +34,18 @@
             <h5>{{ product.created_date }}</h5>
             <h5>{{ product.modified_date }}</h5>
         </div>
+        <div class="create_view">
+            <form action="/products/{{ product.id }}/"method="post" class="">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Add Review">
+            </form>
+        </div>
         <div class="reviews">
             {% for review in reviews %}
                 <div class="review">
                     <h6>{{ review.text }}</h6>
                     <p>{{ review.created_date }}</p>
-
                 </div>
             {%endfor %}
         </div>

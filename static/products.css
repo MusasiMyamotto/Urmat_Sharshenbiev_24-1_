@@ -1,14 +1,10 @@
-.product {
+
+.products {
     width: 80%;
     margin-left: 10%;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    align-items: flex-start;
-    flex-direction: column;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    background-color: #242b2e;
 }
 
 .product_image {

@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from posts.models import Product, Review, Category
-
+from posts.forms import ProductCreateForm, ReviewCreateForm
 
 # Create your views here.
 
@@ -25,15 +25,31 @@ def products_view(request):
 
 
 def product_detail_view(request, id):
+    product = Product.objects.get(id=id)
     if request.method == 'GET':
-        product = Product.objects.get(id=id)
         reviews = Review.objects.filter(product=product)
 
         context = {
             'product': product,
-            'reviews': reviews
+            'reviews': reviews,
+            'form': ReviewCreateForm
         }
         return render(request, 'products/detail.html', context=context)
+
+    if request.method == 'POST':
+        form = ReviewCreateForm(data=request.POST)
+
+        if form.is_valid():
+            Review.objects.create(
+                product_id=id,
+                text=form.cleaned_data.get('text'),
+            )
+            return redirect(f'/products/{id}/')
+        # return render(request, 'products/detail.html', context={
+        #     'product': product_obj,
+        #     'review': review,
+        #     'form': form
+        # })
 
 
 def category_view(request):
@@ -43,3 +59,28 @@ def category_view(request):
             'categories': categories
         }
         return render(request, 'categories/index.html', context=context)
+
+
+def create_products_view(request):
+    if request.method == 'GET':
+        context = {
+            'form': ProductCreateForm
+        }
+        return render(request, 'products/create.html', context=context)
+
+    if request.method == 'POST':
+        form = ProductCreateForm(data=request.POST)
+
+        if form.is_valid():
+            Product.objects.create(
+                name=form.cleaned_data.get('name'),
+                description=form.cleaned_data.get('description'),
+                price=form.cleaned_data['price'] if form.cleaned_data['price'] is not None else 5,
+                quantity=form.cleaned_data.get('quantity'),
+
+            )
+            print('rate')
+            return redirect('/products/')
+        return render(request, 'products/create.html', context={
+            'form': form,
+        })
