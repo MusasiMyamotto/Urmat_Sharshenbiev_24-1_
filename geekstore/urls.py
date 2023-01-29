@@ -18,6 +18,8 @@ from django.urls import path
 from posts.views import main, products_view, product_detail_view, category_view, create_products_view
 from geekstore.settings import MEDIA_URL, MEDIA_ROOT
 from django.conf.urls.static import static
+from users.views import logout_view, login_view, register_view
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +27,12 @@ urlpatterns = [
     path('products/', products_view),
     path('products/<int:id>/', product_detail_view),
     path('category/', category_view),
-    path('products/create/', create_products_view)
+    path('products/create/', create_products_view),
+
+    #users
+    path('users/login/', login_view),
+    path('users/register/', register_view),
+    path('users/logout/', logout_view)
 ]
 
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from posts.models import Product, Review, Category
 from posts.forms import ProductCreateForm, ReviewCreateForm
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -18,7 +19,8 @@ def products_view(request):
         else:
             products = Product.objects.all()
         context = {
-            'products': products
+            'products': products,
+            'user': User
         }
 
         return render(request, 'products/products.html', context=context)
@@ -32,7 +34,8 @@ def product_detail_view(request, id):
         context = {
             'product': product,
             'reviews': reviews,
-            'form': ReviewCreateForm
+            'form': ReviewCreateForm,
+            'user': User
         }
         return render(request, 'products/detail.html', context=context)
 
@@ -41,6 +44,7 @@ def product_detail_view(request, id):
 
         if form.is_valid():
             Review.objects.create(
+                author_id=request.user.id,
                 product_id=id,
                 text=form.cleaned_data.get('text'),
             )
@@ -56,7 +60,8 @@ def category_view(request):
     if request.method == 'GET':
         categories = Category.objects.all()
         context = {
-            'categories': categories
+            'categories': categories,
+            'user': User
         }
         return render(request, 'categories/index.html', context=context)
 
@@ -64,7 +69,8 @@ def category_view(request):
 def create_products_view(request):
     if request.method == 'GET':
         context = {
-            'form': ProductCreateForm
+            'form': ProductCreateForm,
+            'user': User
         }
         return render(request, 'products/create.html', context=context)
 
@@ -83,4 +89,5 @@ def create_products_view(request):
             return redirect('/products/')
         return render(request, 'products/create.html', context={
             'form': form,
+            'user': User
         })

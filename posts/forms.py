@@ -9,4 +9,4 @@ class ProductCreateForm(forms.Form):
 
 
 class ReviewCreateForm(forms.Form):
-    text = forms.CharField(max_length=255)
+    text = forms.CharField(min_length=1)
