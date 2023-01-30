@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect
 from users.forms import AuthForm, RegisterForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-
-
+from users.utils import get_user_from_request
 # Create your views here.
 
 
@@ -11,7 +10,7 @@ def login_view(request):
     if request.method == 'GET':
         context = {
             'form': AuthForm(),
-            'user': User
+            'user': get_user_from_request(request)
         }
         return render(request, 'users/login.html', context=context)
     if request.method == 'POST':
@@ -30,7 +29,7 @@ def login_view(request):
 
         return render(request, 'users/login.html', context={
             'form': form,
-            'user': User
+            'user': get_user_from_request(request)
         })
 
 
@@ -43,9 +42,8 @@ def register_view(request):
     if request.method == 'GET':
         context = {
             'form': RegisterForm,
-            'user': User
         }
-        return render(request, 'users/login.html', context=context)
+        return render(request, 'users/register.html', context=context)
 
     if request.method == 'POST':
         form = RegisterForm(data=request.POST)
@@ -61,7 +59,6 @@ def register_view(request):
             else:
                 form.add_error('password1', 'ошибка')
 
-        return render(request, 'users/login.html', context={
+        return render(request, 'users/register.html', context={
             'form': form,
-            'user': User
         })

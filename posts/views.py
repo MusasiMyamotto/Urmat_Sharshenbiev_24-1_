@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect
 from posts.models import Product, Review, Category
 from posts.forms import ProductCreateForm, ReviewCreateForm
-from django.contrib.auth.models import User
+from users.utils import get_user_from_request
 
 # Create your views here.
 
 
 def main(request):
     if request.method == 'GET':
-        return render(request, 'layouts/index.html')
+        return render(request, 'layouts/index.html', context={'user': get_user_from_request(request)})
 
 
 def products_view(request):
@@ -20,7 +20,7 @@ def products_view(request):
             products = Product.objects.all()
         context = {
             'products': products,
-            'user': User
+            'user': get_user_from_request(request)
         }
 
         return render(request, 'products/products.html', context=context)
@@ -35,7 +35,7 @@ def product_detail_view(request, id):
             'product': product,
             'reviews': reviews,
             'form': ReviewCreateForm,
-            'user': User
+            'user': get_user_from_request(request)
         }
         return render(request, 'products/detail.html', context=context)
 
@@ -61,7 +61,7 @@ def category_view(request):
         categories = Category.objects.all()
         context = {
             'categories': categories,
-            'user': User
+            'user': get_user_from_request(request)
         }
         return render(request, 'categories/index.html', context=context)
 
@@ -70,7 +70,7 @@ def create_products_view(request):
     if request.method == 'GET':
         context = {
             'form': ProductCreateForm,
-            'user': User
+            'user': get_user_from_request(request)
         }
         return render(request, 'products/create.html', context=context)
 
@@ -89,5 +89,4 @@ def create_products_view(request):
             return redirect('/products/')
         return render(request, 'products/create.html', context={
             'form': form,
-            'user': User
         })
