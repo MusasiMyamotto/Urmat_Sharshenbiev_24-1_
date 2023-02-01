@@ -1,26 +1,42 @@
 from django.shortcuts import render, redirect
 from posts.models import Product, Review, Category
 from posts.forms import ProductCreateForm, ReviewCreateForm
-from users.utils import get_user_from_request
 
 # Create your views here.
+
+PAGINATION_LIMIT = 3
 
 
 def main(request):
     if request.method == 'GET':
-        return render(request, 'layouts/index.html', context={'user': get_user_from_request(request)})
+        return render(request, 'layouts/index.html')
 
 
 def products_view(request):
     if request.method == 'GET':
-        category_id = request.GET.get('categori_id')
-        if category_id:
-            products = Product.objects.filter(category=Category.objects.get(id=category_id))
+        products = Product.objects.all()
+        search = request.GET.get('search')
+        page = int(request.GET.get('page', 1))
+
+        if search is not None:
+            products = Product.objects.filter(
+                name__icontains=search,
+                description__icontains=search
+            )
+
+        max_page = products.__len__() / PAGINATION_LIMIT
+        if round(max_page) < max_page:
+            max_page = round(max_page) + 1
         else:
-            products = Product.objects.all()
+            max_page = round(max_page)
+
+        """ slice posts """
+        products = products[PAGINATION_LIMIT * (page - 1):PAGINATION_LIMIT * page]
+
         context = {
             'products': products,
-            'user': get_user_from_request(request)
+            'user': request.user,
+            'max_page': range(1, max_page + 1),
         }
 
         return render(request, 'products/products.html', context=context)
@@ -35,7 +51,6 @@ def product_detail_view(request, id):
             'product': product,
             'reviews': reviews,
             'form': ReviewCreateForm,
-            'user': get_user_from_request(request)
         }
         return render(request, 'products/detail.html', context=context)
 
@@ -61,7 +76,6 @@ def category_view(request):
         categories = Category.objects.all()
         context = {
             'categories': categories,
-            'user': get_user_from_request(request)
         }
         return render(request, 'categories/index.html', context=context)
 
@@ -70,7 +84,6 @@ def create_products_view(request):
     if request.method == 'GET':
         context = {
             'form': ProductCreateForm,
-            'user': get_user_from_request(request)
         }
         return render(request, 'products/create.html', context=context)
 
@@ -85,7 +98,6 @@ def create_products_view(request):
                 quantity=form.cleaned_data.get('quantity'),
 
             )
-            print('rate')
             return redirect('/products/')
         return render(request, 'products/create.html', context={
             'form': form,

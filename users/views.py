@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from users.forms import AuthForm, RegisterForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from users.utils import get_user_from_request
+
+
 # Create your views here.
 
 
@@ -10,7 +11,6 @@ def login_view(request):
     if request.method == 'GET':
         context = {
             'form': AuthForm(),
-            'user': get_user_from_request(request)
         }
         return render(request, 'users/login.html', context=context)
     if request.method == 'POST':
@@ -29,7 +29,6 @@ def login_view(request):
 
         return render(request, 'users/login.html', context={
             'form': form,
-            'user': get_user_from_request(request)
         })
 
 
