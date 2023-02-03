@@ -15,24 +15,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from posts.views import main, products_view, product_detail_view, category_view, create_products_view
+from posts.views import main, products_view, product_detail_view, category_view, create_products_view, ProductsView,\
+    ProductDetailView, CategoryView, CreateProduct
 from geekstore.settings import MEDIA_URL, MEDIA_ROOT
 from django.conf.urls.static import static
-from users.views import logout_view, login_view, register_view
+from users.views import LoginView, RegisterView, LogoutView #logout_view, login_view, register_view,
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main),
-    path('products/', products_view),
-    path('products/<int:id>/', product_detail_view),
-    path('category/', category_view),
-    path('products/create/', create_products_view),
+    path('products/', ProductsView.as_view()),
+    path('products/<int:id>/', ProductDetailView.as_view()),
+    path('category/', CategoryView.as_view()),
+    path('products/create/', CreateProduct.as_view()),
 
     #users
-    path('users/login/', login_view),
-    path('users/register/', register_view),
-    path('users/logout/', logout_view)
+    path('users/login/', LoginView.as_view()),
+    path('users/register/', RegisterView.as_view()),
+    path('users/logout/', LogoutView.as_view()),
 ]
 
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

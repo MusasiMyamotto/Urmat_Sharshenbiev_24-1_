@@ -34,5 +34,8 @@ class Review(models.Model):
     updated_date = models.DateField(auto_now=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
 
+    def __str__(self):
+        return self.text
+
 
 
